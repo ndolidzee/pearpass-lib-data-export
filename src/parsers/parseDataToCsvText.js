@@ -11,7 +11,9 @@ export const parseDataToCsvText = (data) => {
       'password',
       'passwordUpdatedAt',
       'otpInput',
-      'websites'
+      'websites',
+      'passkeyCreatedAt',
+      'passkeyCredential'
     ],
     creditCard: ['name', 'number', 'expireDate', 'securityCode', 'pinCode'],
     identity: [
@@ -100,6 +102,10 @@ export const parseDataToCsvText = (data) => {
         passwordUpdatedAt: data.passwordUpdatedAt || '',
         otpInput: data.otpInput || '',
         websites: (data.websites || []).join(';'),
+        passkeyCreatedAt: data.passkeyCreatedAt || '',
+        passkeyCredential: data.credential
+          ? JSON.stringify(data.credential)
+          : '',
 
         name: data.name || '',
         number: data.number || '',

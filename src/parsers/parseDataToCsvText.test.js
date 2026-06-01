@@ -125,7 +125,12 @@ describe('parseDataToCsvText', () => {
       }
     ]
     const result = parseDataToCsvText(data)
-    expect(result).toHaveLength(0)
+    expect(result).toHaveLength(1)
+    expect(result[0].filename).toMatch(/^PearPass_EmptyVault_/)
+    expect(result[0].data).toContain(
+      'type,vaultName,title,note,customFields,folder,isFavorite,createdAt,updatedAt'
+    )
+    expect(result[0].data).toContain('"","EmptyVault","","","","","","",""')
   })
 
   it('should handle missing optional fields', () => {

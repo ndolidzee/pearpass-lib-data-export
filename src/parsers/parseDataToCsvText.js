@@ -59,14 +59,24 @@ export const parseDataToCsvText = (data) => {
   ]
 
   data.forEach((vault) => {
-    const vaultRecords = vault.records
+    const vaultRecords = (vault.records || [])
       .map((record) => ({
         ...record,
         vaultName: vault.name
       }))
       .filter((r) => !!r.type)
 
-    if (!vaultRecords || vaultRecords.length === 0) {
+    if (vaultRecords.length === 0) {
+      const headers = [...alwaysFirst, ...alwaysLast]
+      const blankRow = headers.map((h) =>
+        h === 'vaultName' ? `"${vault.name}"` : '""'
+      )
+      const timestamp = new Date().toISOString().replace(/[:.-]/g, '_')
+      const safeVaultName = vault.name.replace(/[^a-z0-9]/gi, '_')
+      vaultsToExport.push({
+        filename: `PearPass_${safeVaultName}_${timestamp}.csv`,
+        data: [headers.join(','), blankRow.join(',')].join('\n')
+      })
       return
     }
 
